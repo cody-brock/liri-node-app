@@ -12,6 +12,8 @@ var moment = require("moment");
 var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
 
+var axios = require("axios");
+
 // You should then be able to access your keys information like so
 // var spotify = new spotify(keys.spotify);
 
@@ -25,6 +27,9 @@ switch (userRequest) {
         break;
     case 'spotify-this-song':
         spotifyThisSong();
+        break;
+    case 'movie-this':
+        movieThis();
         break;
 }
 
@@ -46,16 +51,22 @@ function concertThis() {
 }
 
 function spotifyThisSong() {
-    let songName = process.argv[3];
+    //If user doesn't specify song, it defaults to "The Sign."
+    let songName
+    if (process.argv.length === 3) {
+        songName = "The Sign";
+    } else {
+        songName = process.argv[3];
+    }
+
     console.log(`Searching for the song ${songName} in Spotify...`);
+
     spotify.search({type: 'track', query: songName}, function(err, data) {
         if (err) {
             return console.log(`Error occurred: ${err}`);
         }
 
         for (let i = 0; i < data.tracks.items.length; i++) {
-            // console.log(data.tracks.items[0]);
-            
             console.log(data.tracks.items[i].artists[0].name);
             console.log(data.tracks.items[i].name)
             if (data.tracks.items[i].preview_url === null) {
@@ -66,7 +77,29 @@ function spotifyThisSong() {
             console.log(data.tracks.items[i].album.name);
             console.log("*******************")
         }
-
-
     })
+}
+
+function movieThis() {
+    let movieName
+    if (process.argv.length === 3) {
+        movieName = "Mr. Nobody";
+    } else {
+        movieName = process.argv[3];
+    }
+
+    axios.get("https://www.omdbapi.com/?apikey=trilogy&t=" + movieName)
+        .then(function (response) {
+            console.log(response.data.Title);
+            console.log(response.data.Year)
+            console.log(response.data.imdbRating)
+            console.log(response.data.Ratings[1].Value);
+            console.log(response.data.Country);
+            console.log(response.data.Language);
+            console.log(response.data.Plot);
+            console.log(response.data.Actors);
+
+        }).catch(function (error) {
+            console.log(error);
+        })
 }
