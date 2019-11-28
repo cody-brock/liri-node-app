@@ -14,6 +14,8 @@ var spotify = new Spotify(keys.spotify);
 
 var axios = require("axios");
 
+var fs = require("fs");
+
 // You should then be able to access your keys information like so
 // var spotify = new spotify(keys.spotify);
 
@@ -30,6 +32,9 @@ switch (userRequest) {
         break;
     case 'movie-this':
         movieThis();
+        break;
+    case 'do-what-it-says':
+        doWhatItSays();
         break;
 }
 
@@ -102,4 +107,30 @@ function movieThis() {
         }).catch(function (error) {
             console.log(error);
         })
+}
+
+function doWhatItSays() {
+    fs.readFile('random.txt', 'utf8', function(err, data) {
+
+        let newResult = data.split(",");
+
+        let userRequest = newResult[0];
+        let input = newResult[1];
+
+        switch (userRequest) {
+            case 'concert-this':
+                concertThis(input);
+                break;
+            case 'spotify-this-song':
+                spotifyThisSong(input);
+                break;
+            case 'movie-this':
+                movieThis(input);
+                break;
+            case 'do-what-it-says':
+                doWhatItSays(input);
+                break;
+        }
+        
+    })
 }
