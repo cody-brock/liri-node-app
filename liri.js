@@ -17,7 +17,7 @@ var fs = require("fs");
 
 //SECTION 2: USER INPUT & APP LOGIC
 function userCommand(userInput, userQuery) {
-    switch (UserInput) {
+    switch (userInput) {
         case 'concert-this':
             concertThis();
             break;
