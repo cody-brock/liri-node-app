@@ -65,3 +65,46 @@ User must type "node" first | User must type "liri" or "liri.js" second | See be
 * To get OMDB information about "Shawshank Redemption," your would enter "node liri movie-this 'Shawshank Redemption'"
 * To run the command and parameters in random.txt, you would enter "node liri do-what-it-says"
 
+## Screenshots of the App Functioning
+* concert-this:
+
+![concert-this](./images/concert-this_screenshot.png)
+
+* spotify-this-song:
+
+![spotify-this-song](./images/spotify-this-song_screenshot.png)
+
+* movie-this:
+
+![movie-this](./images/movie-this_screenshot.png)
+
+* do-what-it-says:
+
+![do-what-it-says](./images/do-what-it-says_screenshot.png)
+
+* If you enter a command that is not recognized, LIRI will tell you so:
+
+![unsuccessful-example](./images/unsuccessful_screenshot.png)
+
+## Link to Deployed Version of the App
+[GitHub](https://cody-brock.github.io/liri-node-app/)
+**???? Does this work ????**
+
+## Technologies Used
+* Packages:
+    * DotEnv
+    * request
+    * moment
+    * node-spotify-api
+    * axios
+    * fs
+* APIs:
+    * bandsintown
+    * spotify
+    * omdb
+
+## My Role in App Development
+I developed the app on my own, using the project's instructions as a template to start from.
+
+
+**Thank you again!  If you have any questions, please contact me at codylewisbrock@gmail.com**
