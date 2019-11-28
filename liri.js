@@ -3,8 +3,6 @@ require("dotenv").config();
 
 var keys = require("./keys.js");
 
-var $ = require('jquery');
-
 var request = require("request");
 
 var moment = require("moment");
@@ -18,8 +16,8 @@ var fs = require("fs");
 
 
 //SECTION 2: USER INPUT & APP LOGIC
-function userInput(userCommand, userQuery) {
-    switch (userCommand) {
+function userCommand(userInput, userQuery) {
+    switch (UserInput) {
         case 'concert-this':
             concertThis();
             break;
@@ -38,7 +36,7 @@ function userInput(userCommand, userQuery) {
     }
 }
 
-userInput(process.argv[2], process.argv[3]);
+userCommand(process.argv[2], process.argv[3]);
 
 
 //SECTION 3: API CALLS
@@ -124,7 +122,7 @@ function doWhatItSays() {
 
         let newResult = data.split(",");
 
-        userInput(newResult[0], newResult[1]);
+        userCommand(newResult[0], newResult[1]);
         
     })
 }
