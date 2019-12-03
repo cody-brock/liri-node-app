@@ -19,13 +19,13 @@ var fs = require("fs");
 function userCommand(userInput, userQuery) {
     switch (userInput) {
         case 'concert-this':
-            concertThis();
+            concertThis(userQuery);
             break;
         case 'spotify-this-song':
-            spotifyThisSong();
+            spotifyThisSong(userQuery);
             break;
         case 'movie-this':
-            movieThis();
+            movieThis(userQuery);
             break;
         case 'do-what-it-says':
             doWhatItSays();
@@ -36,12 +36,12 @@ function userCommand(userInput, userQuery) {
     }
 }
 
-userCommand(process.argv[2], process.argv[3]);
+userCommand(process.argv[2], process.argv.slice(3).join(' '));
 
 
 //SECTION 3: API CALLS
-function concertThis() {
-    let artist = process.argv[3];
+function concertThis(artist) {
+    // let artist = process.argv[3];
     console.log(`Searching for ${artist}'s next concerts...`);
     request("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp", function(error, response, body) {
         if (!error && response.statusCode === 200) {
@@ -55,22 +55,16 @@ function concertThis() {
     });
 }
 
-function spotifyThisSong() {
+function spotifyThisSong(songName) {
     //If user doesn't specify song, it defaults to "The Sign."
-    let songName
-    if (process.argv.length === 3) {
-        songName = "The Sign";
-    } else {
-        songName = process.argv[3];
-    }
+    // let songName = process.argv[3]
+    if (process.argv.length < 4) songName = "The Sign";
 
     console.log(`Searching for the song ${songName} in Spotify...\n`);
 
     spotify.search({type: 'track', query: songName}, function(err, data) {
-        if (err) {
-            return console.log(`Error occurred: ${err}`);
-        }
-
+        if (err) return console.log(`Error occurred: ${err}`);
+        
         console.log(`SONG RESULTS \n`);
 
         for (let i = 0; i < data.tracks.items.length; i++) {
@@ -88,13 +82,11 @@ function spotifyThisSong() {
     })
 }
 
-function movieThis() {
-    let movieName
-    if (process.argv.length < 4) {
-        movieName = "Mr. Nobody";
-    } else {
-        movieName = process.argv[3];
-    }
+function movieThis(movieName) {
+    //If the user does not enter a movie, defaults to Mr. Nobody
+    // let movieName = process.argv[3]
+    if (process.argv.length < 4) movieName = "Mr. Nobody";
+    
 
     console.log(`Searching for the ${movieName} in OMDB...\n`)
 
@@ -102,9 +94,7 @@ function movieThis() {
         .then(function (response) {
 
             let rtRating = response.data.Ratings[1].Value;
-            if (rtRating === "undefined") {
-                rtRating = "No Rotten Tomatoes Rating Available";
-            } 
+            if (rtRating === "undefined") rtRating = "No Rotten Tomatoes Rating Available";
 
             console.log(`MOVIE RESULTS: \nMovie Name: ${response.data.Title}\nRelease Year: ${response.data.Year}\nIMDB Rating: ${response.data.imdbRating}\nRotten Tomatoes Rating: ${rtRating}\nCountry: ${response.data.Country}\nLanguage: ${response.data.Language}\nPlot: ${response.data.Plot}\nActors: ${response.data.Actors}\n`)
 
@@ -114,6 +104,7 @@ function movieThis() {
 }
 
 function doWhatItSays() {
+    //takes the text from random.txt to run a command
     fs.readFile('random.txt', 'utf8', function(err, data) {
 
         if (err) {
